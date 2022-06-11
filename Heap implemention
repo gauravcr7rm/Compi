@@ -1,0 +1,130 @@
+/* Purpose of this file is to implement
+Priority queue using heap structure. */
+
+
+#include <iostream>
+
+using namespace std;
+
+int arr[50];
+int size = -1;
+void swap(int& a, int& b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
+}
+int getParent(int i)
+{
+	return (i-1)/2;
+}
+int getLChild(int i)
+{
+	return 2*i+1;
+}
+int getRChild(int i)
+{
+	return 2*i+2;
+}
+void shiftUp(int i)
+{
+
+	while(i>0 && arr[getParent(i)] < arr[i])
+	{
+		swap(arr[getParent(i)] , arr[i]);
+		i = getParent(i);
+	}
+}
+void shiftDown(int i)
+{
+	int maxIndex = i;
+	int l = getLChild(i);
+	if(l<=size && arr[l]>arr[maxIndex])
+		maxIndex = l;
+	
+	int r = getRChild(i);
+	
+	if(r <=size && arr[r]>arr[maxIndex])
+		maxIndex = r;
+	
+	if(maxIndex!=i)
+	{
+		swap(arr[i],arr[maxIndex]);
+		shiftDown(maxIndex);
+	}
+}
+void insert(int p)
+{
+	size++;
+	arr[size] = p;
+	shiftUp(size);
+}
+
+int extractMax()
+{
+	int res = arr[0];
+	arr[0] = arr[size];
+	size = size-1;
+	shiftDown(0);
+	return res;
+}
+
+int getMax()
+{
+	return arr[0];
+}
+
+void remove(int p)
+{
+	arr[p] = getMax()+1;
+	shiftUp(p);
+	extractMax();
+}
+
+int main() {
+	insert(45);
+    insert(20);
+    insert(14);
+    insert(12);
+    insert(31);
+    insert(7);
+    insert(11);
+    insert(13);
+    insert(7);
+    int i = 0;
+ 
+    cout << "Priority Queue : ";
+    while (i <= size) {
+        cout << arr[i] << " ";
+        i++;
+    }
+ 
+    cout << "\n";
+ 
+    cout << "Node with maximum priority : "
+         << extractMax() << "\n";
+ 
+
+    cout << "Priority queue after "
+         << "extracting maximum : ";
+    int j = 0;
+    while (j <= size) {
+        cout << arr[j] << " ";
+        j++;
+    }
+ 
+    cout << "\n";
+    
+    cout << "\n";
+ 
+    remove(3);
+    cout << "Priority queue after "
+         << "removing the element : ";
+    int l = 0;
+    while (l <= size) {
+        cout << arr[l] << " ";
+        l++;
+    }
+ 
+	return 0;
+}
